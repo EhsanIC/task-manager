@@ -8,19 +8,18 @@ type TaskRouteContext = {
   params: Promise<{ id: string }>;
 };
 
-export async function DELETE(_request: Request, context: TaskRouteContext) {
-  const { id } = await context.params;
+function parseTaskId(id: string) {
   const taskId = Number(id);
+  return Number.isInteger(taskId) && taskId > 0 ? taskId : null;
+}
 
-  if (!Number.isInteger(taskId) || taskId < 1) {
+export async function DELETE(_request: Request, context: TaskRouteContext) {
+  const taskId = parseTaskId((await context.params).id);
+  if (taskId === null) {
     return NextResponse.json({ error: "Invalid task id." }, { status: 400 });
   }
 
-  const [task] = await db
-    .delete(tasks)
-    .where(eq(tasks.id, taskId))
-    .returning();
-
+  const [task] = await db.delete(tasks).where(eq(tasks.id, taskId)).returning();
   if (!task) {
     return NextResponse.json({ error: "Task not found." }, { status: 404 });
   }
@@ -29,36 +28,29 @@ export async function DELETE(_request: Request, context: TaskRouteContext) {
 }
 
 export async function PATCH(request: Request, context: TaskRouteContext) {
-  const { id } = await context.params;
-  const taskId = Number(id);
-
-  if (!Number.isInteger(taskId) || taskId < 1) {
+  const taskId = parseTaskId((await context.params).id);
+  if (taskId === null) {
     return NextResponse.json({ error: "Invalid task id." }, { status: 400 });
   }
 
   let body: unknown;
-
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json(
-      { error: "Request body must be valid JSON." },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Request body must be valid JSON." }, { status: 400 });
   }
 
   const parsed = updateTaskSchema.safeParse(body);
-
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Please provide a valid completion state.", issues: parsed.error.issues },
+      { error: "Please provide valid task data.", issues: parsed.error.issues },
       { status: 400 },
     );
   }
 
   const [task] = await db
     .update(tasks)
-    .set({ completed: parsed.data.completed })
+    .set(parsed.data)
     .where(eq(tasks.id, taskId))
     .returning();
 

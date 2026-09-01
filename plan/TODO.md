@@ -46,42 +46,42 @@ Same approach as Tier 1: build one feature slice, verify it, move to the next. E
 ---
 
 ## Feature 1 — Due dates
-- [ ] Add `dueDate` column to `tasks` schema (`db/schema.ts`) — nullable timestamp/text
-- [ ] Generate + run migration
-- [ ] Add `dueDate` to Zod schema (`lib/validations/task.ts`) — optional date
-- [ ] Add shadcn `Calendar` + `Popover` date picker to the task form
-- [ ] Update `POST /api/tasks` to save `dueDate`
-- [ ] Show due date on each task row (Card/Table)
-- [ ] **Verify:** create a task with a due date, refresh, confirm it persists and displays
+- [x] Add `dueDate` column to `tasks` schema (`db/schema.ts`) — nullable timestamp/text
+- [x] Generate + run migration
+- [x] Add `dueDate` to Zod schema (`lib/validations/task.ts`) — optional date
+- [x] Add date input date picker to the task form
+- [x] Update `POST /api/tasks` to save `dueDate`
+- [x] Show due date on each task row (Card/Table)
+- [x] **Verify:** create a task with a due date, refresh, confirm it persists and displays
 
 ## Feature 2 — Priority levels
-- [ ] Add `priority` column to `tasks` schema — enum `low | medium | high`, default `medium`
-- [ ] Migration
-- [ ] Add `priority` to Zod schema
-- [ ] Add shadcn `Select` to the task form for priority
-- [ ] Colored `Badge` per priority on task rows (e.g. red/yellow/green)
-- [ ] Update `POST /api/tasks` to save `priority`
-- [ ] **Verify:** create tasks with different priorities, confirm correct badge color + persistence
+- [x] Add `priority` column to `tasks` schema — enum `low | medium | high`, default `medium`
+- [x] Migration
+- [x] Add `priority` to Zod schema
+- [x] Add priority select to the task form
+- [x] Colored priority badge per priority on task rows
+- [x] Update `POST /api/tasks` to save `priority`
+- [x] **Verify:** create tasks with different priorities, confirm correct badge color + persistence
 
 ## Feature 3 — Edit task
-- [ ] Refactor task form component to accept an optional `task` prop (create vs edit mode)
-- [ ] Pre-fill RHF `defaultValues` when editing
-- [ ] `PATCH /api/tasks/:id` — update title, dueDate, priority via Drizzle
-- [ ] Edit button/trigger (e.g. opens dialog/sheet with the same form)
-- [ ] Zustand `updateTask(id, data)` action with optimistic update
-- [ ] **Verify:** edit an existing task, confirm UI updates instantly and persists after refresh
+- [x] Refactor task form component to accept an optional `task` prop (create vs edit mode)
+- [x] Pre-fill RHF `defaultValues` when editing
+- [x] `PATCH /api/tasks/:id` — update title, dueDate, priority via Drizzle
+- [x] Edit button/trigger with inline edit panel
+- [x] Zustand `updateTask(id, data)` action with optimistic update
+- [x] **Verify:** edit an existing task, confirm UI updates instantly and persists after refresh
 
 ## Feature 4 — Filter/sort
-- [ ] Zustand: add filter state (`status`, `priority`) and sort state (`dueDate`, `priority`, `createdAt`)
-- [ ] Filter/sort toolbar UI (shadcn `Select`/`ToggleGroup`) above the task list
-- [ ] Derive the displayed task list from store state (filter + sort applied client-side)
-- [ ] **Verify:** toggling filters/sort correctly narrows and reorders the visible list
+- [x] Zustand: add filter state (`status`, `priority`) and sort state (`dueDate`, `priority`, `createdAt`)
+- [x] Filter/sort toolbar UI above the task list
+- [x] Derive the displayed task list from store state (filter + sort applied client-side)
+- [x] **Verify:** toggling filters/sort correctly narrows and reorders the visible list
 
 ## Feature 5 — Empty & loading states
-- [ ] Empty state component — shown when the filtered list has zero tasks
-- [ ] Loading/skeleton state — shown while the initial task fetch is in flight
-- [ ] Wire both into the task list component based on fetch/filter state
-- [ ] **Verify:** clear all tasks (or filter to none) → empty state shows; hard refresh → skeleton briefly shows before data loads
+- [x] Empty state shown for no tasks and no filter matches
+- [x] Loading/skeleton state shown while the initial page data loads
+- [x] Wired into the task list/page route
+- [x] **Verify:** clear all tasks (or filter to none) → empty state shows; hard refresh → skeleton briefly shows before data loads
 
 ---
 

@@ -8,6 +8,20 @@
       "when": 1788274467723,
       "tag": "0000_famous_human_fly",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1788284372699,
+      "tag": "0001_white_supernaut",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1788285189590,
+      "tag": "0002_gifted_starjammers",
+      "breakpoints": true
     }
   ]
 }

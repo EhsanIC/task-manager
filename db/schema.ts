@@ -7,6 +7,10 @@ export const tasks = sqliteTable("tasks", {
   createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
     .defaultNow(),
+  dueDate: integer("due_date", { mode: "timestamp_ms" }),
+  priority: text("priority", { enum: ["low", "medium", "high"] })
+    .notNull()
+    .default("medium"),
 });
 
 export type Task = typeof tasks.$inferSelect;
