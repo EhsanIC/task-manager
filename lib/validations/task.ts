@@ -8,4 +8,9 @@ export const createTaskSchema = z.object({
     .min(2, "Task titles must be at least 2 characters long."),
 });
 
+export const updateTaskSchema = z.object({
+  completed: z.boolean(),
+});
+
 export type CreateTaskInput = z.infer<typeof createTaskSchema>;
+export type UpdateTaskInput = z.infer<typeof updateTaskSchema>;

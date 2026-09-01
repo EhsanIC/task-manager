@@ -23,11 +23,11 @@ Each feature below is a self-contained slice — build it, verify it works, then
 - [x] **Verify:** tasks created in Feature 2 show up correctly on page load/refresh
 
 ## Feature 4 — Toggle complete
-- [ ] Zustand store: holds task list, `toggleComplete(id)` action with optimistic update
-- [ ] Checkbox on each task row, bound to store
-- [ ] `PATCH /api/tasks/:id` Route Handler — update `completed` in Drizzle
-- [ ] Store calls the PATCH after optimistic flip; roll back on failure
-- [ ] **Verify:** click checkbox → UI updates instantly, refresh page → state persisted
+- [x] Zustand store: holds task list, `toggleComplete(id)` action with optimistic update
+- [x] Checkbox on each task row, bound to store
+- [x] `PATCH /api/tasks/:id` Route Handler — update `completed` in Drizzle
+- [x] Store calls the PATCH after optimistic flip; roll back on failure
+- [x] **Verify:** click checkbox → UI updates instantly, refresh page → state persisted
 
 ## Feature 5 — Delete a task
 - [ ] Delete button on each task row
