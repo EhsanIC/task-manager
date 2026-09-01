@@ -1,6 +1,7 @@
 import { CheckCircle2, ListTodo, Plus } from "lucide-react";
 import { TaskForm } from "@/components/task-form";
 import { TaskList } from "@/components/task-list";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { db } from "@/db";
 import { tasks } from "@/db/schema";
 
@@ -23,9 +24,12 @@ export default async function Home() {
               <p className="text-xs text-muted-foreground">Stay on top of your work</p>
             </div>
           </div>
-          <div className="hidden items-center gap-2 text-sm text-muted-foreground sm:flex">
-            <CheckCircle2 aria-hidden="true" className="size-4 text-primary" />
-            <span>Simple. Focused. Productive.</span>
+          <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-2 text-sm text-muted-foreground sm:flex">
+              <CheckCircle2 aria-hidden="true" className="size-4 text-primary" />
+              <span>Simple. Focused. Productive.</span>
+            </div>
+            <ThemeToggle />
           </div>
         </header>
 

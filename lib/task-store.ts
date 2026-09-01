@@ -4,6 +4,14 @@ import { create } from "zustand";
 import type { Task } from "@/db/schema";
 import type { UpdateTaskInput } from "@/lib/validations/task";
 
+function parseTaskDates(task: Task): Task {
+  return {
+    ...task,
+    createdAt: task.createdAt instanceof Date ? task.createdAt : new Date(task.createdAt as unknown as string),
+    dueDate: task.dueDate instanceof Date ? task.dueDate : task.dueDate ? new Date(task.dueDate as unknown as string) : null,
+  };
+}
+
 function toTaskData(data: UpdateTaskInput): Partial<Task> {
   return {
     ...(data.completed !== undefined ? { completed: data.completed } : {}),
@@ -26,6 +34,8 @@ type TaskStore = {
   priorityFilter: PriorityFilter;
   sortBy: SortOption;
   initialize: (tasks: Task[]) => void;
+  addTask: (task: Task) => void;
+  replaceTask: (task: Task) => void;
   setStatusFilter: (value: StatusFilter) => void;
   setPriorityFilter: (value: PriorityFilter) => void;
   setSortBy: (value: SortOption) => void;
@@ -41,6 +51,8 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   priorityFilter: "all",
   sortBy: "createdAt",
   initialize: (tasks) => set((state) => ({ tasks: state.tasks.length === 0 ? tasks : state.tasks })),
+  addTask: (task) => set((state) => ({ tasks: [...state.tasks, parseTaskDates(task)] })),
+  replaceTask: (task) => set((state) => ({ tasks: state.tasks.map((t) => (t.id === task.id ? parseTaskDates(task) : t)) })),
   setStatusFilter: (statusFilter) => set({ statusFilter }),
   setPriorityFilter: (priorityFilter) => set({ priorityFilter }),
   setSortBy: (sortBy) => set({ sortBy }),
@@ -65,7 +77,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         body: JSON.stringify(data),
       });
       if (!response.ok) throw new Error("Unable to update the task.");
-      const updatedTask = (await response.json()) as Task;
+      const updatedTask = parseTaskDates((await response.json()) as Task);
       set((state) => ({ tasks: state.tasks.map((task) => task.id === id ? updatedTask : task) }));
       return true;
     } catch {

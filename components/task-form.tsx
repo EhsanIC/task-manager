@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import type { Task } from "@/db/schema";
 import { createTaskSchema, type CreateTaskInput } from "@/lib/validations/task";
+import { useTaskStore } from "@/lib/task-store";
 
 type TaskFormProps = {
   task?: Task;
@@ -22,6 +23,8 @@ function dateInputValue(date: Date | null) {
 export function TaskForm({ task, onSuccess, onCancel }: TaskFormProps) {
   const router = useRouter();
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const addTask = useTaskStore((s) => s.addTask);
+  const replaceTask = useTaskStore((s) => s.replaceTask);
   const isEditing = Boolean(task);
   const form = useForm<CreateTaskInput>({
     resolver: zodResolver(createTaskSchema),
@@ -57,6 +60,12 @@ export function TaskForm({ task, onSuccess, onCancel }: TaskFormProps) {
           ? result.error
           : isEditing ? "Unable to update the task." : "Unable to create the task.";
         throw new Error(message);
+      }
+      const resultTask = (await response.json()) as Task;
+      if (isEditing) {
+        replaceTask(resultTask);
+      } else {
+        addTask(resultTask);
       }
       form.reset({ title: "", dueDate: "", priority: "medium" });
       router.refresh();
