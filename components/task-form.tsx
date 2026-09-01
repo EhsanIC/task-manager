@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +11,7 @@ import {
 } from "@/lib/validations/task";
 
 export function TaskForm() {
+  const router = useRouter();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const form = useForm<CreateTaskInput>({
     resolver: zodResolver(createTaskSchema),
@@ -43,6 +45,7 @@ export function TaskForm() {
       }
 
       form.reset();
+      router.refresh();
     } catch (error) {
       setSubmitError(
         error instanceof Error ? error.message : "Unable to create the task.",
