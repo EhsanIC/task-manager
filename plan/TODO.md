@@ -11,11 +11,11 @@ Each feature below is a self-contained slice — build it, verify it works, then
 - [x] **Verify:** open Drizzle Studio (or a quick script) and confirm the empty `tasks` table exists
 
 ## Feature 2 — Create a task
-- [ ] Zod schema: `title` (required, min length)
-- [ ] React Hook Form with the Zod resolver, single title input
-- [ ] Server Action or `POST /api/tasks` Route Handler — insert into `tasks` via Drizzle
-- [ ] Wire form submit → server action/route
-- [ ] **Verify:** submit the form, confirm a new row appears in SQLite
+- [x] Zod schema: `title` (required, min length)
+- [x] React Hook Form with the Zod resolver, single title input
+- [x] Server Action or `POST /api/tasks` Route Handler — insert into `tasks` via Drizzle
+- [x] Wire form submit → server action/route
+- [x] **Verify:** submit the form, confirm a new row appears in SQLite
 
 ## Feature 3 — List tasks
 - [ ] `GET /api/tasks` Route Handler (or direct server component query) — select all from `tasks`
