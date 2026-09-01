@@ -59,7 +59,7 @@ export function TaskList({ tasks: initialTasks }: { tasks: Task[] }) {
                 <button
                   aria-label={`${task.completed ? "Mark" : "Complete"} ${task.title}`}
                   aria-pressed={task.completed}
-                  className="rounded-full text-muted-foreground outline-none transition hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/30 disabled:cursor-wait disabled:opacity-60"
+                  className="cursor-pointer rounded-full text-muted-foreground outline-none transition hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/30 disabled:cursor-pointer disabled:opacity-60"
                   disabled={isPending}
                   onClick={() => void toggleComplete(task.id)}
                   type="button"
