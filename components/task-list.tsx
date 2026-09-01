@@ -1,7 +1,7 @@
 "use client";
 
-import { CheckCircle2, Circle } from "lucide-react";
-import { useEffect } from "react";
+import { CheckCircle2, Circle, Ellipsis, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import type { Task } from "@/db/schema";
 import { useTaskStore } from "@/lib/task-store";
 
@@ -18,6 +18,8 @@ export function TaskList({ tasks: initialTasks }: { tasks: Task[] }) {
   const pendingTaskIds = useTaskStore((state) => state.pendingTaskIds);
   const initialize = useTaskStore((state) => state.initialize);
   const toggleComplete = useTaskStore((state) => state.toggleComplete);
+  const deleteTask = useTaskStore((state) => state.deleteTask);
+  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
 
   useEffect(() => {
     initialize(initialTasks);
@@ -50,12 +52,13 @@ export function TaskList({ tasks: initialTasks }: { tasks: Task[] }) {
           </p>
         </div>
       ) : (
-        <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border">
+        <ul className="divide-y divide-border overflow-visible rounded-2xl border border-border">
           {displayedTasks.map((task) => {
             const isPending = pendingTaskIds.has(task.id);
+            const isMenuOpen = openMenuId === task.id;
 
             return (
-              <li className="flex items-center gap-4 bg-background px-4 py-4 sm:px-5" key={task.id}>
+              <li className="relative flex items-center gap-4 bg-background px-4 py-4 first:rounded-t-2xl last:rounded-b-2xl sm:px-5" key={task.id}>
                 <button
                   aria-label={`${task.completed ? "Mark" : "Complete"} ${task.title}`}
                   aria-pressed={task.completed}
@@ -81,6 +84,33 @@ export function TaskList({ tasks: initialTasks }: { tasks: Task[] }) {
                 <span className="shrink-0 text-xs text-muted-foreground">
                   {task.completed ? "Complete" : "Open"}
                 </span>
+                <div className="relative">
+                  <button
+                    aria-expanded={isMenuOpen}
+                    aria-label={`Actions for ${task.title}`}
+                    className="flex size-8 cursor-pointer items-center justify-center rounded-full text-muted-foreground outline-none transition hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/30 disabled:cursor-pointer disabled:opacity-50"
+                    disabled={isPending}
+                    onClick={() => setOpenMenuId(isMenuOpen ? null : task.id)}
+                    type="button"
+                  >
+                    <Ellipsis aria-hidden="true" className="size-4" />
+                  </button>
+                  {isMenuOpen ? (
+                    <div className="absolute right-0 top-10 z-10 min-w-36 rounded-xl border border-border bg-background p-1 shadow-lg">
+                      <button
+                        className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-destructive outline-none transition hover:bg-destructive/10 focus-visible:bg-destructive/10"
+                        onClick={() => {
+                          setOpenMenuId(null);
+                          void deleteTask(task.id);
+                        }}
+                        type="button"
+                      >
+                        <Trash2 aria-hidden="true" className="size-4" />
+                        Delete
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
               </li>
             );
           })}

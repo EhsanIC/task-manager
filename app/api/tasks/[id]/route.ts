@@ -8,6 +8,26 @@ type TaskRouteContext = {
   params: Promise<{ id: string }>;
 };
 
+export async function DELETE(_request: Request, context: TaskRouteContext) {
+  const { id } = await context.params;
+  const taskId = Number(id);
+
+  if (!Number.isInteger(taskId) || taskId < 1) {
+    return NextResponse.json({ error: "Invalid task id." }, { status: 400 });
+  }
+
+  const [task] = await db
+    .delete(tasks)
+    .where(eq(tasks.id, taskId))
+    .returning();
+
+  if (!task) {
+    return NextResponse.json({ error: "Task not found." }, { status: 404 });
+  }
+
+  return NextResponse.json({ success: true });
+}
+
 export async function PATCH(request: Request, context: TaskRouteContext) {
   const { id } = await context.params;
   const taskId = Number(id);

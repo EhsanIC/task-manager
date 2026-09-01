@@ -30,10 +30,10 @@ Each feature below is a self-contained slice — build it, verify it works, then
 - [x] **Verify:** click checkbox → UI updates instantly, refresh page → state persisted
 
 ## Feature 5 — Delete a task
-- [ ] Delete button on each task row
-- [ ] Zustand `deleteTask(id)` action — optimistic removal from list
-- [ ] `DELETE /api/tasks/:id` Route Handler — delete row via Drizzle
-- [ ] **Verify:** click delete → row disappears instantly, refresh page → stays gone
+- [x] Delete button on each task row
+- [x] Zustand `deleteTask(id)` action — optimistic removal from list
+- [x] `DELETE /api/tasks/:id` Route Handler — delete row via Drizzle
+- [x] **Verify:** click delete → row disappears instantly, refresh page → stays gone
 
 ---
 

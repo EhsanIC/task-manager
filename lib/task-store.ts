@@ -8,6 +8,7 @@ type TaskStore = {
   pendingTaskIds: Set<number>;
   initialize: (tasks: Task[]) => void;
   toggleComplete: (id: number) => Promise<void>;
+  deleteTask: (id: number) => Promise<void>;
 };
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
@@ -51,6 +52,41 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       set((state) => ({
         tasks: state.tasks.map((task) =>
           task.id === id ? { ...task, completed: currentTask.completed } : task,
+        ),
+      }));
+    } finally {
+      set((state) => {
+        const pendingTaskIds = new Set(state.pendingTaskIds);
+        pendingTaskIds.delete(id);
+        return { pendingTaskIds };
+      });
+    }
+  },
+
+  deleteTask: async (id) => {
+    const currentTask = get().tasks.find((task) => task.id === id);
+
+    if (!currentTask || get().pendingTaskIds.has(id)) {
+      return;
+    }
+
+    set((state) => ({
+      tasks: state.tasks.filter((task) => task.id !== id),
+      pendingTaskIds: new Set(state.pendingTaskIds).add(id),
+    }));
+
+    try {
+      const response = await fetch(`/api/tasks/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to delete the task.");
+      }
+    } catch {
+      set((state) => ({
+        tasks: [...state.tasks, currentTask].sort(
+          (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
         ),
       }));
     } finally {
