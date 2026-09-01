@@ -6,7 +6,12 @@ const dueDateSchema = z
   .union([z.string().date(), z.date(), z.literal("")])
   .optional()
   .nullable()
-  .transform((value) => (value && value !== "" ? new Date(`${value}T00:00:00.000Z`) : null));
+  .transform((value) => {
+    if (!value || value === "") return null;
+    if (value instanceof Date) return value;
+    const [y, m, d] = value.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  });
 
 const taskFields = {
   title: z

@@ -18,7 +18,7 @@ function toTaskData(data: UpdateTaskInput): Partial<Task> {
     ...(data.title !== undefined ? { title: data.title } : {}),
     ...(data.priority !== undefined ? { priority: data.priority } : {}),
     ...(data.dueDate !== undefined
-      ? { dueDate: data.dueDate ? new Date(`${data.dueDate}T00:00:00.000Z`) : null }
+      ? { dueDate: data.dueDate ? (() => { const [y, m, d] = String(data.dueDate).split("-").map(Number); return new Date(y, m - 1, d); })() : null }
       : {}),
   };
 }
