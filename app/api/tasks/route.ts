@@ -21,9 +21,13 @@ export async function POST(request: Request) {
     );
   }
 
+  console.log("[POST /api/tasks] Received body:", JSON.stringify(body, null, 2));
+  console.log("[POST /api/tasks] dueDate type:", typeof (body as Record<string, unknown>).dueDate, "value:", (body as Record<string, unknown>).dueDate);
+
   const parsed = createTaskSchema.safeParse(body);
 
   if (!parsed.success) {
+    console.error("[POST /api/tasks] Validation failed:", parsed.error.issues);
     return NextResponse.json(
       { error: "Please provide a valid task title.", issues: parsed.error.issues },
       { status: 400 },

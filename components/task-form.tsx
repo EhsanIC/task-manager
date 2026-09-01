@@ -40,13 +40,16 @@ export function TaskForm({ task, onSuccess, onCancel }: TaskFormProps) {
     });
   }, [form, task]);
 
-  async function onSubmit(values: CreateTaskInput) {
+  async function onSubmit(_values: CreateTaskInput) {
     setSubmitError(null);
+    const rawValues = form.getValues();
+    console.log("[TaskForm] Raw form values:", rawValues);
+    console.log("[TaskForm] dueDate type:", typeof rawValues.dueDate, "value:", rawValues.dueDate);
     try {
       const response = await fetch(isEditing ? `/api/tasks/${task!.id}` : "/api/tasks", {
         method: isEditing ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify(rawValues),
       });
       if (!response.ok) {
         const result: unknown = await response.json().catch(() => null);

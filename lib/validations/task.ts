@@ -3,10 +3,10 @@ import { z } from "zod";
 export const prioritySchema = z.enum(["low", "medium", "high"]);
 
 const dueDateSchema = z
-  .union([z.string().date(), z.date()])
+  .union([z.string().date(), z.date(), z.literal("")])
   .optional()
   .nullable()
-  .transform((value) => (value ? new Date(`${value}T00:00:00.000Z`) : null));
+  .transform((value) => (value && value !== "" ? new Date(`${value}T00:00:00.000Z`) : null));
 
 const taskFields = {
   title: z
