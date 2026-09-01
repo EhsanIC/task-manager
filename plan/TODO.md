@@ -5,10 +5,10 @@ Each feature below is a self-contained slice — build it, verify it works, then
 ---
 
 ## Feature 1 — Project setup + schema for tasks
-- [ ] Set up SQLite + Drizzle ORM in the project
-- [ ] Define `tasks` table: `id`, `title`, `completed`, `createdAt`
-- [ ] Run migration (`drizzle-kit generate` + `migrate`)
-- [ ] **Verify:** open Drizzle Studio (or a quick script) and confirm the empty `tasks` table exists
+- [x] Set up SQLite + Drizzle ORM in the project
+- [x] Define `tasks` table: `id`, `title`, `completed`, `createdAt`
+- [x] Run migration (`drizzle-kit generate` + `migrate`)
+- [x] **Verify:** open Drizzle Studio (or a quick script) and confirm the empty `tasks` table exists
 
 ## Feature 2 — Create a task
 - [ ] Zod schema: `title` (required, min length)
