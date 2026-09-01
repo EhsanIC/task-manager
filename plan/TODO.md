@@ -18,9 +18,9 @@ Each feature below is a self-contained slice — build it, verify it works, then
 - [x] **Verify:** submit the form, confirm a new row appears in SQLite
 
 ## Feature 3 — List tasks
-- [ ] `GET /api/tasks` Route Handler (or direct server component query) — select all from `tasks`
-- [ ] Render with shadcn `Card` or `Table`
-- [ ] **Verify:** tasks created in Feature 2 show up correctly on page load/refresh
+- [x] `GET /api/tasks` Route Handler (or direct server component query) — select all from `tasks`
+- [x] Render with shadcn `Card` or `Table`
+- [x] **Verify:** tasks created in Feature 2 show up correctly on page load/refresh
 
 ## Feature 4 — Toggle complete
 - [ ] Zustand store: holds task list, `toggleComplete(id)` action with optimistic update

@@ -1,7 +1,13 @@
 import { CheckCircle2, ListTodo, Plus } from "lucide-react";
 import { TaskForm } from "@/components/task-form";
+import { TaskList } from "@/components/task-list";
+import { db } from "@/db";
+import { tasks } from "@/db/schema";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const allTasks = await db.select().from(tasks).orderBy(tasks.createdAt);
   return (
     <main className="min-h-screen bg-muted/40 px-4 py-8 sm:px-6 sm:py-14">
       <div className="mx-auto w-full max-w-3xl">
@@ -43,6 +49,7 @@ export default function Home() {
           <div className="bg-muted/30 px-6 py-4 text-xs text-muted-foreground sm:px-10">
             Press <kbd className="rounded border border-border bg-background px-1.5 py-0.5 font-mono">Enter</kbd> to add your task
           </div>
+        <TaskList tasks={allTasks} />
         </section>
       </div>
     </main>

@@ -3,6 +3,12 @@ import { db } from "@/db";
 import { tasks } from "@/db/schema";
 import { createTaskSchema } from "@/lib/validations/task";
 
+export async function GET() {
+  const allTasks = await db.select().from(tasks).orderBy(tasks.createdAt);
+
+  return NextResponse.json(allTasks);
+}
+
 export async function POST(request: Request) {
   let body: unknown;
 
